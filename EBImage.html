@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Muhammad Rizky Baskara (200605110090) / TI-A Linear Algebra / Dosen Pembimbing Prof.Dr.Suhartono, M.Kom" />
+
+
+<title>Tutorial EBImage</title>
+
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">EBImage</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="EBImage.html">EBImage</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Tutorial EBImage</h1>
+<h4 class="author">Muhammad Rizky Baskara (200605110090) / TI-A Linear Algebra / Dosen Pembimbing Prof.Dr.Suhartono, M.Kom</h4>
+<h4 class="date">20 Maret 2021</h4>
+
+</div>
+
+
+<div id="langkah-awal" class="section level2">
+<h2>Langkah Awal</h2>
+<div id="menginstall-package-ebimage" class="section level3">
+<h3>Menginstall package EBImage</h3>
+<p>Langkah ini adalah langkah yang wajib dilakukan agar fungsi dari EBImage itu dapat diakses dengan R Studio.</p>
+<pre class="r"><code>if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
+    install.packages(&quot;BiocManager&quot;)
+BiocManager::install(&quot;EBImage&quot;)</code></pre>
+<pre><code>## Bioconductor version 3.12 (BiocManager 1.30.10), R 4.0.3 (2020-10-10)</code></pre>
+<pre><code>## Installing package(s) &#39;EBImage&#39;</code></pre>
+<pre><code>## package &#39;EBImage&#39; successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\MasikDev\AppData\Local\Temp\Rtmpeo5Se6\downloaded_packages</code></pre>
+<pre><code>## Installation path not writeable, unable to update packages: boot, class,
+##   cluster, codetools, foreign, KernSmooth, MASS, Matrix, mgcv, nlme, nnet,
+##   spatial, survival</code></pre>
+<pre><code>## Old packages: &#39;RCurl&#39;, &#39;xfun&#39;</code></pre>
+</div>
+</div>
+<div id="langkah-persiapan" class="section level2">
+<h2>Langkah Persiapan</h2>
+<div id="men-set-lokasi-kerja-memanggil-package-ebimage-reading-image" class="section level3 tabset">
+<h3 class="tabset">Men-set lokasi kerja, memanggil package EBImage, reading image</h3>
+<div id="set-lokasi" class="section level4">
+<h4>Set Lokasi</h4>
+<p>Tahap ini adalah tahap dimana kita mengatur lokasi tempat gambar yang akan dieksekusi berada (biasanya satu folder dalam file project).</p>
+<pre class="r"><code>#set lokasi kerja
+setwd(&quot;D:/R/DUA/Latihan EBImage/&quot;)</code></pre>
+</div>
+<div id="memanggil-ebimage" class="section level4">
+<h4>Memanggil EBImage</h4>
+<p>Memanggil package yang sudah diinstall di tahap 1, yaitu package EBImage.</p>
+<pre class="r"><code>#memanggi package
+library(EBImage)</code></pre>
+</div>
+<div id="reading-image" class="section level4">
+<h4>Reading Image</h4>
+<p>Dan yang terakhir, kita perlu melakukan assign (import)pada fungsi readImage dengan judul photo yang sudah ditaruh di folder set kerja dan memberinya nama misal Image.</p>
+<pre class="r"><code>Image &lt;- readImage(&#39;MyPhoto.jpg&#39;)</code></pre>
+</div>
+</div>
+</div>
+<div id="langkah-percobaan" class="section level2">
+<h2>Langkah Percobaan</h2>
+<div id="menampilkan-gambar-sifat-gambar-dan-histogram-gambar" class="section level3 tabset">
+<h3 class="tabset">Menampilkan Gambar, Sifat Gambar, dan Histogram Gambar</h3>
+<div id="menampilkan-gambar" class="section level4">
+<h4>Menampilkan Gambar</h4>
+<p>Disini adalah cara untuk menampilkan file asli dari gambar yang sudah diimport ke dalam project kita.</p>
+<pre class="r"><code>display(Image) </code></pre>
+<p><img src="EBImage_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="sifat-gambar" class="section level4">
+<h4>Sifat Gambar</h4>
+<p>Disini adalah cara untuk menampilkan sifat dari gambar yang sudah diimport. Adapun sifat dari gambar itu berupa spesifikasi gambar dan spesifikasi berupa matriks.</p>
+<pre class="r"><code>print(Image)</code></pre>
+<pre><code>## Image 
+##   colorMode    : Color 
+##   storage.mode : double 
+##   dim          : 2304 3456 3 
+##   frames.total : 3 
+##   frames.render: 1 
+## 
+## imageData(object)[1:5,1:6,1]
+##           [,1]      [,2]      [,3]      [,4]      [,5]      [,6]
+## [1,] 0.4156863 0.4156863 0.4156863 0.4156863 0.4156863 0.4156863
+## [2,] 0.4196078 0.4196078 0.4196078 0.4156863 0.4156863 0.4156863
+## [3,] 0.4117647 0.4117647 0.4117647 0.4117647 0.4156863 0.4156863
+## [4,] 0.4117647 0.4117647 0.4117647 0.4117647 0.4117647 0.4156863
+## [5,] 0.4078431 0.4078431 0.4078431 0.4117647 0.4117647 0.4117647</code></pre>
+</div>
+<div id="histogram-gambar" class="section level4">
+<h4>Histogram Gambar</h4>
+<p>Histogram gamabr adalah suatu grafik yang akan menahistmpilkan banyak hal bisa berupa kecerahan (brightness), kontas (contrast), warna (color) dari sebuah gambar.</p>
+<pre class="r"><code>hist(Image)</code></pre>
+<p><img src="EBImage_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="langkah-akhir" class="section level2">
+<h2>Langkah Akhir</h2>
+<p>Tahap ini adalah tahap dimana kita melakukan pengolahan terhadap gambar agar menghasilkan output yang diinginkan.</p>
+<div id="brightness" class="section level3">
+<h3>Brightness</h3>
+<pre class="r"><code>Image1 &lt;- Image + 0.2
+Image2 &lt;- Image - 0.2
+par(mfrow= c(1,2))
+plot(Image1)
+plot(Image2)</code></pre>
+<p><img src="EBImage_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="adjusting-contrast" class="section level3">
+<h3>Adjusting Contrast</h3>
+<pre class="r"><code>Image3 &lt;- Image * 0.5
+Image4 &lt;- Image * 2
+par(mfrow= c(1,2))
+plot(Image3)
+plot(Image4)</code></pre>
+<p><img src="EBImage_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="gamma-correction" class="section level3">
+<h3>Gamma Correction</h3>
+<pre class="r"><code>Image5 &lt;- Image ^ 2
+Image6 &lt;- Image ^ 0.7
+par(mfrow= c(1,2))
+plot(Image5)
+plot(Image6)</code></pre>
+<p><img src="EBImage_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="cropping" class="section level3">
+<h3>Cropping</h3>
+<pre class="r"><code>display(Image[2300:1800, 70:2000,])</code></pre>
+<p><img src="EBImage_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="spatial-transformation" class="section level3">
+<h3>Spatial Transformation</h3>
+<pre class="r"><code>Imagetr &lt;- translate(rotate(Image, 45), c(50, 0))
+display(Imagetr)</code></pre>
+<p><img src="EBImage_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="color-management" class="section level3">
+<h3>Color Management</h3>
+<pre class="r"><code>colorMode(Image) &lt;- Grayscale
+display(Image)</code></pre>
+<pre><code>## Only the first frame of the image stack is displayed.
+## To display all frames use &#39;all = TRUE&#39;.</code></pre>
+<p><img src="EBImage_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>print(Image)</code></pre>
+<pre><code>## Image 
+##   colorMode    : Grayscale 
+##   storage.mode : double 
+##   dim          : 2304 3456 3 
+##   frames.total : 3 
+##   frames.render: 3 
+## 
+## imageData(object)[1:5,1:6,1]
+##           [,1]      [,2]      [,3]      [,4]      [,5]      [,6]
+## [1,] 0.4156863 0.4156863 0.4156863 0.4156863 0.4156863 0.4156863
+## [2,] 0.4196078 0.4196078 0.4196078 0.4156863 0.4156863 0.4156863
+## [3,] 0.4117647 0.4117647 0.4117647 0.4117647 0.4156863 0.4156863
+## [4,] 0.4117647 0.4117647 0.4117647 0.4117647 0.4117647 0.4156863
+## [5,] 0.4078431 0.4078431 0.4078431 0.4117647 0.4117647 0.4117647</code></pre>
+<pre class="r"><code>colorMode(Image) &lt;- Color
+display(Image)</code></pre>
+<p><img src="EBImage_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+</div>
+<div id="filtering" class="section level3 tabset">
+<h3 class="tabset">Filtering</h3>
+<div id="contoh-1" class="section level4">
+<h4>Contoh 1</h4>
+<pre class="r"><code>fHigh &lt;- matrix(1, nc = 3, nr = 3)
+fHigh[2, 2] &lt;- -8
+Image.fHigh &lt;- filter2(Image, fHigh)
+display(Image.fHigh)</code></pre>
+<p><img src="EBImage_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="contoh-2" class="section level4">
+<h4>Contoh 2</h4>
+<pre class="r"><code>fLow &lt;- makeBrush(21, shape= &#39;disc&#39;, step=FALSE)^2
+fLow &lt;- fLow/sum(fLow)
+Image.fLow &lt;- filter2(Image, fLow)
+display(Image.fLow)</code></pre>
+<p><img src="EBImage_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
